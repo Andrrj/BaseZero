@@ -1,0 +1,68 @@
+<?php
+$title = 'Alteração de Módulo';
+$this->headTitle($title);
+//$this->HeadScript()->appendFile($this->basePath('js/busca/clienteempresa.js'),'text/javascript');
+
+echo "<h1>".$this->escapeHtml($title)."</h1>";
+
+$flash = $this->flashMessenger();
+$flash->setMessageOpenFormat('<div%s>
+<button type="button" class="close" data-dismiss="alert" aria-hidden="true">
+    &times;
+</button>
+<div>')->setMessageCloseString('</div></div>');
+
+echo $flash->render('error', array('alert', 'alert-dismissable', 'alert-danger'));
+echo $flash->render('info', array('alert', 'alert-dismissable', 'alert-info'));
+echo $flash->render('default', array('alert', 'alert-dismissable', 'alert-warning'));
+echo $flash->render('success', array('alert', 'alert-dismissable', 'alert-success'));
+
+$form = $this->form;
+
+
+$form->setAttribute('action', $this->url('modulo',
+		array('action' => 'edit', 'codigo' => $form->get('codigo')->getValue())));
+
+$form->prepare();
+
+echo $this->form()->openTag($form);
+
+echo '<div class="form-group">';
+$campo = $form->get('codigo');
+echo $this->formRow($campo);
+echo "</div>";
+
+echo '<div class="form-group">';
+$campo = $form->get('nome');
+echo $this->formRow($campo);
+echo "</div>";
+
+echo '<div class="form-group">';
+$campo = $form->get('controller');
+echo $this->formRow($campo);
+echo "</div>";
+
+
+echo '<div class="form-group">';
+echo $this->formCollection($form->get('acao'));
+echo '</div>';
+ 
+echo '<div class="form-group col-xs-offset-8 col-md-offset-6">';
+echo ' <button type="button" origem="acao"
+        class="btn btn-info categoria"
+        >'.$this->translate('Nova Ação').'</button>
+        ';
+echo '</div>';
+
+echo '<div class="form-group">';
+$campo = $form->get('csrf');
+echo $this->formRow($campo);
+echo "</div>";
+
+echo '<div class="form-group">';
+$campo = $form->get('submit');
+echo $this->formRow($campo);
+echo "</div>";
+
+//echo $this->formCollection($this->form);
+echo $this->form()->closeTag();

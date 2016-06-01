@@ -1,0 +1,89 @@
+<?php
+
+namespace Application\Entity;
+
+use Doctrine\ORM\Mapping as ORM;
+
+/**
+ * Usuario
+ *
+ * @ORM\Table(name="usuario", indexes={@ORM\Index(name="IDX_2265B05DB8D75A50", columns={"empresa"}), @ORM\Index(name="IDX_2265B05D4180C698", columns={"locale"})})
+ * @ORM\Entity
+ */
+class Usuario
+{
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="codigo", type="integer", nullable=false)
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="SEQUENCE")
+     * @ORM\SequenceGenerator(sequenceName="usuario_codigo_seq", allocationSize=1, initialValue=1)
+     */
+    private $codigo;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="login", type="string", length=100, nullable=true)
+     */
+    private $login;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="senha", type="string", length=500, nullable=true)
+     */
+    private $senha;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="email", type="string", length=100, nullable=true)
+     */
+    private $email;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="token", type="text", nullable=true)
+     */
+    private $token;
+
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="data", type="date", nullable=true)
+     */
+    private $data;
+
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="hora", type="time", nullable=true)
+     */
+    private $hora;
+
+    /**
+     * @var \Application\Entity\ClienteEmpresa
+     *
+     * @ORM\ManyToOne(targetEntity="Application\Entity\ClienteEmpresa")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="empresa", referencedColumnName="codigo")
+     * })
+     */
+    private $empresa;
+
+    /**
+     * @var \Application\Entity\Locale
+     *
+     * @ORM\ManyToOne(targetEntity="Application\Entity\Locale")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="locale", referencedColumnName="codigo")
+     * })
+     */
+    private $locale;
+
+
+}
+

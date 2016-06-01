@@ -1,0 +1,15 @@
+* 
+*
+* Sistema de administração ilistApp
+*
+* Autor: André Eppinghaus
+* Feito em ZF2 e Apiglity
+* 
+* 
+
+
+Configurações após realizar um novo download:
+
+chown -R andre.apache * 
+chmod -R 775 data
+

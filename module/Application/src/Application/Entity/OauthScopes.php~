@@ -1,0 +1,51 @@
+<?php
+
+namespace Application\Entity;
+
+use Doctrine\ORM\Mapping as ORM;
+
+/**
+ * OauthScopes
+ *
+ * @ORM\Table(name="oauth_scopes")
+ * @ORM\Entity
+ */
+class OauthScopes
+{
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="type", type="string", length=255, nullable=false)
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="NONE")
+     */
+    private $type = 'supported';
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="scope", type="string", length=2000, nullable=false)
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="NONE")
+     */
+    private $scope;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="client_id", type="string", length=80, nullable=false)
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="NONE")
+     */
+    private $clientId;
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="is_default", type="smallint", nullable=true)
+     */
+    private $isDefault;
+
+
+}
+

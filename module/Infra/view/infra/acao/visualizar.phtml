@@ -1,0 +1,80 @@
+<?php   
+use Zend\Form\Element;
+use Zend\Form\Form;
+
+echo $this->headScript()->captureStart();
+
+echo "
+$(document).ready(function(){
+
+    
+    $('#voltar').click(function(){
+    window.close();
+});
+    
+    $('link[href*=checktask.min.css]').attr('disabled', 'disabled');
+    $('link[href*=jquery.mobile.icons.min.css]').attr('disabled', 'disabled');
+    $('link[href*=jquery.mobile.structure-1.4.5.min.css]').attr('disabled', 'disabled');
+    //$('fieldset> .ui-radio').attr('data-role', 'controlgroup');
+   
+
+});";
+
+
+
+echo $this->headScript()->captureEnd();
+
+$this->headLink()->appendStylesheet($this->basePath('css/themes/checktask.min.css'));
+$this->headLink()->appendStylesheet($this->basePath('css/themes/jquery.mobile.icons.min.css'));
+$this->headLink()->appendStylesheet($this->basePath('css/jquery.mobile.structure-1.4.5.min.css'));
+$this->HeadScript()->appendFile('http://code.jquery.com/jquery-1.11.1.min.js','text/javascript');
+$this->HeadScript()->appendFile($this->basePath('js/jquery.mobile-1.4.5.min.js'),'text/javascript');
+
+$title = 'Banco de Questões';
+echo  $this->headTitle($title);
+
+$questao = $this->questao;
+
+
+?>
+
+	<body>
+	
+        <div data-role="page" data-theme="a">
+                <div data-role="header" data-position="inline">
+                      <?php  echo "<h1>".$this->escapeHtml($title)."</h1>"; ?>
+                
+                </div>
+                <div data-role="content" data-theme="a">
+  <?php echo "<a href=".$this->url('questoes')." id='voltar' >Voltar</a>";?>
+  <?php
+
+  
+  
+  //exibe titulo da questao
+  echo "<br/><h2>".$questao['questao']."</h2>";
+  
+  //exibe evidencia
+  if (! empty($questao['evidencia'])) {
+  	echo '<div class="container_12" style="border: 1px solid;-moz-border-radius: 15px;">
+         <label id="evidencia">
+      <h3>'.$questao['evidencia']."</h3></label></div> <br/>";
+  }
+  
+  
+ echo $this->form()->openTag($form);
+ echo $this->formCollection($this->form);
+  /*echo "<fieldset data-role='controlgroup' data-type='horizontal' >";
+  echo $this->formElement($form->get('escolha'));
+  echo "</fieldset>";
+  */
+  echo $this->form()->closeTag();
+  ?>
+  
+                </div>
+        </div>
+</body>
+</html>
+
+
+	

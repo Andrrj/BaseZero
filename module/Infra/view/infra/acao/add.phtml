@@ -1,0 +1,53 @@
+<?php
+$title = 'Incluir nova Ação';
+$this->headTitle($title);
+
+//$this->HeadScript()->appendFile($this->basePath('js/busca/clienteempresa.js'),'text/javascript');
+
+echo "<h1>".$this->escapeHtml($title)."</h1>";
+
+$flash = $this->flashMessenger();
+$flash->setMessageOpenFormat('<div%s>
+<button type="button" class="close" data-dismiss="alert" aria-hidden="true">
+    &times;
+</button>
+<div>')->setMessageCloseString('</div></div>');
+
+echo $flash->render('error', array('alert', 'alert-dismissable', 'alert-danger'));
+echo $flash->render('info', array('alert', 'alert-dismissable', 'alert-info'));
+echo $flash->render('default', array('alert', 'alert-dismissable', 'alert-warning'));
+echo $flash->render('success', array('alert', 'alert-dismissable', 'alert-success'));
+
+
+echo "<div class='container'>";
+
+$form = $this->form;
+$form->setAttribute('action', $this->url('acao', array('action' => 'add')));
+$form->prepare();
+
+echo $this->form()->openTag($form);
+
+// echo '<div class="form-group">';
+// $campo = $form->get('codigo');
+// echo $this->formRow($campo);
+// echo "</div>";
+
+echo '<div class="form-group">';
+$campo = $form->get('descricao');
+echo $this->formRow($campo);
+echo "</div>";
+
+echo '<div class="form-group">';
+$campo = $form->get('csrf');
+echo $this->formRow($campo);
+echo "</div>";
+
+echo '<div class="form-group">';
+$campo = $form->get('submit');
+echo $this->formRow($campo);
+echo "</div>";
+
+//echo $this->formCollection($this->form);
+echo $this->form()->closeTag();
+
+echo "</div>";

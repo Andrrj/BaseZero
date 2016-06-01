@@ -1,0 +1,121 @@
+<?php
+
+namespace Application\Entity;
+
+use Doctrine\ORM\Mapping as ORM;
+
+/**
+ * OauthUsers
+ *
+ * @ORM\Table(name="oauth_users", uniqueConstraints={@ORM\UniqueConstraint(name="oauth_users_username_pk", columns={"username"})}, indexes={@ORM\Index(name="IDX_93804FF86A98335C", columns={"cidade"}), @ORM\Index(name="IDX_93804FF8265DE1E3", columns={"estado"}), @ORM\Index(name="IDX_93804FF84180C698", columns={"locale"})})
+ * @ORM\Entity
+ */
+class OauthUsers
+{
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="id", type="integer", nullable=false)
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="SEQUENCE")
+     * @ORM\SequenceGenerator(sequenceName="oauth_users_id_seq", allocationSize=1, initialValue=1)
+     */
+    private $id;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="username", type="string", length=255, nullable=false)
+     */
+    private $username;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="password", type="string", length=2000, nullable=true)
+     */
+    private $password;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="name", type="string", length=255, nullable=true)
+     */
+    private $name;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="last_name", type="string", length=255, nullable=true)
+     */
+    private $lastName;
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="empresa", type="integer", nullable=true)
+     */
+    private $empresa = '1';
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="cep", type="string", length=500, nullable=true)
+     */
+    private $cep;
+
+    /**
+     * @var \Application\Entity\Cidade
+     *
+     * @ORM\ManyToOne(targetEntity="Application\Entity\Cidade")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="cidade", referencedColumnName="id")
+     * })
+     */
+    private $cidade;
+
+    /**
+     * @var \Application\Entity\Estado
+     *
+     * @ORM\ManyToOne(targetEntity="Application\Entity\Estado")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="estado", referencedColumnName="id")
+     * })
+     */
+    private $estado;
+
+    /**
+     * @var \Application\Entity\Locale
+     *
+     * @ORM\ManyToOne(targetEntity="Application\Entity\Locale")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="locale", referencedColumnName="codigo")
+     * })
+     */
+    private $locale;
+
+    /**
+     * @var \Doctrine\Common\Collections\Collection
+     *
+     * @ORM\ManyToMany(targetEntity="Application\Entity\Papel", inversedBy="id")
+     * @ORM\JoinTable(name="oauth_papel",
+     *   joinColumns={
+     *     @ORM\JoinColumn(name="id", referencedColumnName="id")
+     *   },
+     *   inverseJoinColumns={
+     *     @ORM\JoinColumn(name="papel", referencedColumnName="codigo")
+     *   }
+     * )
+     */
+    private $papel;
+
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->papel = new \Doctrine\Common\Collections\ArrayCollection();
+    }
+
+}
+
