@@ -1,0 +1,17 @@
+<?php
+$title = 'Login';
+$this->headTitle($title);
+
+echo "<h1>".$this->escapeHtml($title)."</h1>";
+$form = $this->form;
+if ($form==false) {
+    echo "Já cadastrado";
+    
+}else {
+    $form->setAttribute('action', $this->url('infra', array('action' => 'add')));
+    $form->prepare();
+    
+    echo $this->form()->openTag($form);
+    echo $this->formCollection($this->form);
+    echo $this->form()->closeTag();
+}

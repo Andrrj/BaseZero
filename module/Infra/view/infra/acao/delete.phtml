@@ -1,0 +1,32 @@
+<?php
+$title = 'Remover esta Ação ?';
+
+$this->headTitle($title);
+
+echo "<h1>".$this->escapeHtml($title)."</h1>";
+
+$form = $this->form;
+$form->setAttribute('action', $this->url('acao', array('action' => 'delete', 'codigo' => $codigo)));
+$form->prepare();
+
+echo "<p class='bg-warning'>".$this->translate('Descrição').": ".$this->objeto->getDescricao()."</p>";
+
+echo "<div class='container'>";
+
+echo $this->form()->openTag($form);
+echo '<div class="form-group">';
+echo "<div class='row'>";
+echo "<div class='col-xs-12 col-sm-2 col-md-2'>";
+$campo = $form->get('return');
+echo $this->formRow($campo);
+echo "</div>";
+echo "<div class='col-xs-12 col-sm-2 col-md-2'>";
+$campo = $form->get('del');
+echo $this->formRow($campo);
+echo "</div>";
+echo "</div>";
+echo "</div>";
+
+
+echo $this->form()->closeTag();
+echo "</div>";

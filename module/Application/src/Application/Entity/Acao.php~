@@ -1,0 +1,48 @@
+<?php
+
+namespace Application\Entity;
+
+use Doctrine\ORM\Mapping as ORM;
+
+/**
+ * Acao
+ *
+ * @ORM\Table(name="acao")
+ * @ORM\Entity
+ */
+class Acao
+{
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="codigo", type="integer", nullable=false)
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="SEQUENCE")
+     * @ORM\SequenceGenerator(sequenceName="acao_codigo_seq", allocationSize=1, initialValue=1)
+     */
+    private $codigo;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="descricao", type="string", length=100, nullable=true)
+     */
+    private $descricao;
+
+    /**
+     * @var \Doctrine\Common\Collections\Collection
+     *
+     * @ORM\ManyToMany(targetEntity="Application\Entity\Modulo", mappedBy="acao")
+     */
+    private $modulo;
+
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->modulo = new \Doctrine\Common\Collections\ArrayCollection();
+    }
+
+}
+

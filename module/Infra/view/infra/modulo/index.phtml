@@ -1,0 +1,71 @@
+<?php   
+use Zend\Form\Element;
+
+echo $this->headScript()->captureStart();
+
+echo " $(document).ready(function(){
+  $('#tb_padrao').DataTable();
+    
+    
+});";
+
+echo $this->headScript()->captureEnd();
+echo "<div class='container'>";
+
+
+$title = 'Cadastro de Módulos';
+echo  $this->headTitle($title);
+echo "<h1>".$this->escapeHtml($title)."</h1>";
+
+
+$flash = $this->flashMessenger();
+$flash->setMessageOpenFormat('<div%s>
+<button type="button" class="close" data-dismiss="alert" aria-hidden="true">
+    &times;
+</button>
+<div>')->setMessageCloseString('</div></div>');
+
+echo $flash->render('error', array('alert', 'alert-dismissable', 'alert-danger'));
+echo $flash->render('info', array('alert', 'alert-dismissable', 'alert-info'));
+echo $flash->render('default', array('alert', 'alert-dismissable', 'alert-warning'));
+echo $flash->render('success', array('alert', 'alert-dismissable', 'alert-success'));
+
+echo "<a  class='btn btn-info' href=".$this->url('modulo', array('action'=>'add')).">Novo Módulo</a><br><br>";
+
+echo '<br><table id="tb_padrao" border="0" class="display" cellspacing="0" width="100%">
+				<thead>
+					<tr>
+
+						<th>Descrição</th>
+                        <th>Ação</th>
+                        <th>&nbsp;</th>
+                        <th>&nbsp;</th>
+					</tr>
+				</thead>
+
+				<tbody>';
+
+//$contador=0;
+foreach ($this->registro as $_registro) {
+    
+    echo '<tr><td>'.$this->escapeHtml($_registro->getNome() ).' </td>';
+    
+    echo '<td>';
+    foreach ($_registro->getAcao() as $acao)
+    {
+    	echo "<p>".$acao->getDescricao()."</p>";
+    }
+    echo ' </td>';
+    
+    echo '<td><a href="'.$this->url('modulo',
+    		array('action'=>'edit', 'codigo' => $_registro->getCodigo())).'">Editar</a></td>';
+    echo '<td><a href="'.$this->url('modulo',
+		array('action'=>'delete', 'codigo' => $_registro->getCodigo() )).'">Remover</a></td>';
+   
+    echo '</tr>';
+   
+}
+echo '          </tbody>
+    </table> </div>';
+
+

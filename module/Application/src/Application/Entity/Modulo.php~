@@ -1,0 +1,79 @@
+<?php
+
+namespace Application\Entity;
+
+use Doctrine\ORM\Mapping as ORM;
+
+/**
+ * Modulo
+ *
+ * @ORM\Table(name="modulo")
+ * @ORM\Entity
+ */
+class Modulo
+{
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="codigo", type="integer", nullable=false)
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="SEQUENCE")
+     * @ORM\SequenceGenerator(sequenceName="modulo_codigo_seq", allocationSize=1, initialValue=1)
+     */
+    private $codigo;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="nome", type="string", length=100, nullable=true)
+     */
+    private $nome;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="controller", type="string", length=500, nullable=true)
+     */
+    private $controller;
+
+    /**
+     * @var \Doctrine\Common\Collections\Collection
+     *
+     * @ORM\ManyToMany(targetEntity="Application\Entity\Acao", inversedBy="modulo")
+     * @ORM\JoinTable(name="modulo_acao",
+     *   joinColumns={
+     *     @ORM\JoinColumn(name="modulo", referencedColumnName="codigo")
+     *   },
+     *   inverseJoinColumns={
+     *     @ORM\JoinColumn(name="acao", referencedColumnName="codigo")
+     *   }
+     * )
+     */
+    private $acao;
+
+    /**
+     * @var \Doctrine\Common\Collections\Collection
+     *
+     * @ORM\ManyToMany(targetEntity="Application\Entity\Papel", inversedBy="modulo")
+     * @ORM\JoinTable(name="modulo_papel",
+     *   joinColumns={
+     *     @ORM\JoinColumn(name="modulo", referencedColumnName="codigo")
+     *   },
+     *   inverseJoinColumns={
+     *     @ORM\JoinColumn(name="papel", referencedColumnName="codigo")
+     *   }
+     * )
+     */
+    private $papel;
+
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->acao = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->papel = new \Doctrine\Common\Collections\ArrayCollection();
+    }
+
+}
+

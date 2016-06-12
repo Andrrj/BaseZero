@@ -1,0 +1,55 @@
+<?php
+
+namespace Application\Entity;
+
+use Doctrine\ORM\Mapping as ORM;
+
+/**
+ * OauthAccessTokens
+ *
+ * @ORM\Table(name="oauth_access_tokens")
+ * @ORM\Entity
+ */
+class OauthAccessTokens
+{
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="access_token", type="string", length=40, nullable=false)
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="SEQUENCE")
+     * @ORM\SequenceGenerator(sequenceName="oauth_access_tokens_access_token_seq", allocationSize=1, initialValue=1)
+     */
+    private $accessToken;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="client_id", type="string", length=80, nullable=false)
+     */
+    private $clientId;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="user_id", type="string", length=255, nullable=true)
+     */
+    private $userId;
+
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="expires", type="datetime", nullable=false)
+     */
+    private $expires;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="scope", type="string", length=2000, nullable=true)
+     */
+    private $scope;
+
+
+}
+

@@ -1,0 +1,43 @@
+<?php   
+use Zend\Form\Element;
+
+echo $this->headScript()->captureStart();
+
+echo " $(document).ready(function(){
+  $('#tb_padrao').DataTable();
+    
+    
+});";
+
+echo $this->headScript()->captureEnd();
+
+
+$title = 'Logs';
+echo  $this->headTitle($title);
+echo "<h1>".$this->escapeHtml($title)."</h1>";
+
+echo '<table id="tb_padrao" border="0" class="display" cellspacing="0" width="100%">
+				<thead>
+					<tr>
+
+						<th>Data</th>
+                        <th>Hora</th>
+                        <th>Mensagem</th>
+					</tr>
+				</thead>
+
+				<tbody>';
+
+//$contador=0;
+foreach ($this->registro as $_registro) {
+   // echo '<tr><td><input type="checkbox" name="data[]" value="'.$_registro->getCodigo().'"></td>';
+    echo '<td>'.$this->escapeHtml($_registro->getData()->format('d/m/Y') ).' </td>';
+    echo '<td>'.$this->escapeHtml($_registro->getHora()->format('H:i:s') ).' </td>';
+    echo '<td>'.$this->escapeHtml($_registro->getMensagem() ).' </td>';
+    echo '</tr>';
+   
+}
+echo '          </tbody>
+    </table>';
+
+

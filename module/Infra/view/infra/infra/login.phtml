@@ -1,0 +1,66 @@
+<?php
+
+$title = 'Login';
+$this->headTitle($title);
+
+$translator = $this->locale;
+// Setting a translator
+$this->formLabel()->setTranslator($translator);
+
+
+echo "<h1>".$this->escapeHtml($title)."</h1>";
+$form = $this->form;
+$form->setAttribute('action', $this->url('infra', array('action' => 'login')));
+//$form->setAttribute('class', 'form-horizontal');
+
+$flash = $this->flashMessenger();
+$flash->setMessageOpenFormat('<div%s>
+<button type="button" class="close" data-dismiss="alert" aria-hidden="true">
+    &times;
+</button>
+<div>')->setMessageCloseString('</div></div>');
+
+echo $flash->render('error', array('alert', 'alert-dismissable', 'alert-danger'));
+echo $flash->render('info', array('alert', 'alert-dismissable', 'alert-info'));
+echo $flash->render('default', array('alert', 'alert-dismissable', 'alert-warning'));
+echo $flash->render('success', array('alert', 'alert-dismissable', 'alert-success'));
+
+$formLabel = $this->plugin('formLabel');
+$form->prepare();
+
+
+echo "<div class='container'>";
+    echo $this->form()->openTag($form);
+    
+    echo '<div class="form-group">';
+    $name = $form->get('login');
+    echo $this->formRow($name);
+    echo "</div>";
+    
+    // $name = $form->get('login');
+    // echo $this->formRow($name);
+    // echo "</div>";
+    echo '<div class="form-group">';
+    $name = $form->get('senha');
+    echo $this->formRow($name);
+    echo "</div>";
+    
+    echo $this->formHidden($form->get('csrf'));
+    
+//     echo '<div class="form-group">';
+//         echo $this->formlabel($form->get('captcha')); 
+//     echo '<div>';
+//         echo $this->formCaptcha($form->get('captcha')); 
+//     echo '<div class="error-message">';
+//         echo $this->formElementErrors($form->get('captcha'));
+//     echo '</div>
+//                 </div>
+//             </div>
+//         ';
+            
+    echo $this->formElement($form->get('submit'));
+//    echo $this->formCollection($this->form);
+    
+    echo $this->form()->closeTag();
+   
+echo "</div>";

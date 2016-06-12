@@ -1,0 +1,14 @@
+<?php
+$title = $this->translate('Excluir este usuário ?');
+
+$this->headTitle($title);
+
+echo "<h1>".$this->escapeHtml($title)."</h1>";
+
+$form = $this->form;
+$form->setAttribute('action', $this->url('usuario', array('action' => 'delete', 'codigo' => $codigo)));
+$form->prepare();
+echo "<p class='alert'>".$this->objeto->getLogin()."</p>";
+echo $this->form()->openTag($form);
+echo $this->formCollection($this->form);
+echo $this->form()->closeTag();

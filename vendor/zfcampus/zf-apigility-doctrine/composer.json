@@ -1,0 +1,53 @@
+{
+    "name": "zfcampus/zf-apigility-doctrine",
+    "type": "library",
+    "description": "Doctrine for Apigility",
+    "keywords": [
+        "apigility",
+        "doctrine",
+        "api"
+    ],
+    "homepage": "http://www.apigility.com/",
+    "license": "Apache-2.0",
+    "authors": [
+        {
+            "name": "Tom Anderson",
+            "email": "tanderson@soliantconsulting.com"
+        }
+    ],
+    "extra": {
+        "branch-alias": {
+            "dev-master": "1.1-dev",
+            "dev-develop": "1.2-dev"
+        }
+    },
+    "require-dev": {
+        "doctrine/doctrine-mongo-odm-module": "^0.9.0",
+        "doctrine/doctrine-orm-module": "^0.9.0",
+        "doctrine/mongodb-odm": "^1",
+        "phpunit/phpunit": "^4.7",
+        "squizlabs/php_codesniffer": "^2.3.0",
+        "zendframework/zend-form": "^2.5.0",
+        "zendframework/zend-log": "^2.5.0",
+        "zendframework/zend-serializer": "^2.5.0",
+        "zendframework/zend-test": "^2.5.0",
+        "zendframework/zend-hydrator": "~1",
+        "zfcampus/zf-apigility-admin": "^1.1",
+        "zendframework/zend-i18n": "^2.5.0"
+    },
+    "require": {
+        "php": ">=5.4",
+        "phpro/zf-doctrine-hydration-module": "^0.1.5",
+        "zfcampus/zf-apigility": "^1.0"
+    },
+    "suggest": {
+        "doctrine/doctrine-orm-module": "For ORM mapping",
+        "doctrine/doctrine-mongo-odm-module": "For Mongo ODM mapping"
+    },
+    "prefer-stable": true,
+    "autoload": {
+        "psr-4": {
+            "ZF\\Apigility\\Doctrine\\": "src/"
+        }
+    }
+}

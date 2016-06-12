@@ -1,0 +1,63 @@
+<?php
+
+namespace Application\Entity;
+
+use Doctrine\ORM\Mapping as ORM;
+
+/**
+ * Papel
+ *
+ * @ORM\Table(name="papel")
+ * @ORM\Entity
+ */
+class Papel
+{
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="codigo", type="integer", nullable=false)
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="SEQUENCE")
+     * @ORM\SequenceGenerator(sequenceName="papel_codigo_seq", allocationSize=1, initialValue=1)
+     */
+    private $codigo;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="descricao", type="string", length=100, nullable=true)
+     */
+    private $descricao;
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="publico", type="integer", nullable=true)
+     */
+    private $publico = '0';
+
+    /**
+     * @var \Doctrine\Common\Collections\Collection
+     *
+     * @ORM\ManyToMany(targetEntity="Application\Entity\OauthUsers", mappedBy="papel")
+     */
+    private $id;
+
+    /**
+     * @var \Doctrine\Common\Collections\Collection
+     *
+     * @ORM\ManyToMany(targetEntity="Application\Entity\Modulo", mappedBy="papel")
+     */
+    private $modulo;
+
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->id = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->modulo = new \Doctrine\Common\Collections\ArrayCollection();
+    }
+
+}
+

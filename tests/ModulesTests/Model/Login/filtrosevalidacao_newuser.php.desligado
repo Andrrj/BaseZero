@@ -1,0 +1,127 @@
+<?php
+namespace ModulesTests\b\Model;
+
+use PHPUnit_Framework_TestCase;
+
+use ModulesTests\ServiceManagerGrabber;
+use Infra\Form\UsuarioFilter;
+
+class FiltrosTest extends PHPUnit_Framework_TestCase
+{
+	protected $serviceManager;
+	public $inputFilter;
+	public function setUp()
+	{
+		$serviceManagerGrabber   = new ServiceManagerGrabber();
+		$this->serviceManager = $serviceManagerGrabber->getServiceManager();
+		$this->inputFilter = new UsuarioFilter();
+	}
+	
+	/** @dataProvider validatedDataProvider */
+	public function testValidation($data, $valid)
+	{
+	    
+		$this->inputFilter->setData($data);
+		var_dump($this->inputFilter->getValues());
+		
+		$this->assertSame($valid, $this->inputFilter->isValid());
+	}
+	
+	public function validatedDataProvider()
+	{
+		return array(
+				array(
+						array(),
+						false
+				),
+				array(
+	                array( "login"=> "admin",
+					"senha"=> "admin", 
+					"senha1"=> "11",
+				    "email" => "teste",
+	                		),
+					false
+					  
+				),
+				array(
+				    array( "login"=> "1", //erro
+				        "senha"=> "senha",
+				        "senha1"=> "senha",
+				        "email" => "senha@teste.com",
+				    ),
+				    false
+				    	
+				),
+				array(
+				    array( "login"=> "usuario", 
+				        "senha"=> "senha",
+				        "senha1"=> "senha",
+				        "email" => "senha",//erro
+				    ),
+				    false
+				     
+				),
+				
+				array(
+				    array( "login"=> "usuario",
+				        "senha"=> "s1",//erro
+				        "senha1"=> "s1",
+				        "email" => "senha@teste.com",
+				    ),
+				    false
+				     
+				),
+				
+				array(
+				    array( "login"=> "usuario",
+				        "senha"=> "s1",
+				        "senha1"=> "s1",//erro
+				        "email" => "senha@teste.com",
+				    ),
+				    false
+				     
+				),
+				array(
+				    array( "login"=> "usuario",
+				        "senha"=> "s2345678901234567890aa", //erro > 20
+				        "senha1"=> "s2345678901234567890aa",
+				        "email" => "senha@teste.com",
+				    ),
+				    false
+				     
+				),
+				
+				array(
+				    array( "login"=> "usuario",
+				        "senha"=> "s2345678901234567890aa", //erro > 20
+				        "senha1"=> "s2345678901234567890aa", //erro >20
+				        "email" => "senha@teste.com",
+				    ),
+				    false
+				     
+				),
+				
+				array(
+				    array( "login"=> "usuario",
+				        "senha"=> "iguais", 
+				        "senha1"=> "diferente", //senha diferente 
+				        "email" => "senha@teste.com",
+				    ),
+				    false
+				     
+				),
+				array(
+				    array( "login"=> "usuario", //ok
+				        "senha"=> "senha", //ok
+				        "senha1"=> "senha", //ok
+				        "email" => "test@TESTE.com", //ok
+				    ),
+				    true
+				     
+				),
+		);
+	}
+	
+		
+	
+}
