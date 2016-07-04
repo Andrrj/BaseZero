@@ -66,6 +66,7 @@ class Usuario
     private $hora;
 
     /**
+<<<<<<< HEAD
      * @var \Application\Entity\ClienteEmpresa
      *
      * @ORM\ManyToOne(targetEntity="Application\Entity\ClienteEmpresa")
@@ -76,6 +77,8 @@ class Usuario
     private $empresa;
 
     /**
+=======
+>>>>>>> c11d551e3e871d26d68e43531bcc177a24487914
      * @var \Application\Entity\Locale
      *
      * @ORM\ManyToOne(targetEntity="Application\Entity\Locale")

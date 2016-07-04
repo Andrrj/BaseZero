@@ -21,14 +21,23 @@ return array(
         'ZF\\Rpc',
         'ZF\\Versioning',
         'ZF\\Apigility\\Documentation',
+<<<<<<< HEAD
         'ZF\\Apigility\\Admin',
         'ZF\\Configuration',
+=======
+>>>>>>> c11d551e3e871d26d68e43531bcc177a24487914
         'DoctrineModule',
         'DoctrineORMModule',
         'Infra',
         'Categoria',
+<<<<<<< HEAD
         'User',
         23 => 'ZfrCors',
+=======
+        'Produto',
+        'Mercado',
+        'User',
+>>>>>>> c11d551e3e871d26d68e43531bcc177a24487914
     ),
     'module_listener_options' => array(
         'module_paths' => array(

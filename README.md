@@ -1,8 +1,13 @@
+<<<<<<< HEAD
 Estrutura do projeto baseZro
+=======
+Estrutura do projeto baseZero
+>>>>>>> c11d551e3e871d26d68e43531bcc177a24487914
 
 Este projeto tem como objetivo manter uma estrutura Zend Framework 2 básica
 para o desenvolvimento de sistemas.
 
+<<<<<<< HEAD
 Instalação inicial do módulo:
 
 http://framework.zend.com/manual/current/en/user-guide/skeleton-application.html
@@ -12,11 +17,20 @@ Após baixar o módulo no servidor colocar:
 chmod 777 data
 
 Instalação em README.md
+=======
+Após baixar o módulo no servidor colocar:
+
+chown -R andre.apache *
+chmod -R 775 data
+
+Site demo: http://www.ambiente-virtual.net
+>>>>>>> c11d551e3e871d26d68e43531bcc177a24487914
 
 Módulos instalados: 
 https://github.com/doctrine/DoctrineModule
 https://github.com/doctrine/DoctrineORMModule
 
+<<<<<<< HEAD
 ZendSkeletonApplication
 =======================
 
@@ -135,3 +149,5 @@ it should look something like below:
     }
 
 Restart the nginx, now you should be ready to go!
+=======
+>>>>>>> c11d551e3e871d26d68e43531bcc177a24487914

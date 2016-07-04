@@ -21,8 +21,11 @@ return array(
         'ZF\\Rpc',
         'ZF\\Versioning',
         'ZF\\Apigility\\Documentation',
+<<<<<<< HEAD
         'ZF\\Apigility\\Admin', //Ambiente administracao apigility
         'ZF\\Configuration',//ambiente administracao apigility comentar
+=======
+>>>>>>> c11d551e3e871d26d68e43531bcc177a24487914
         'DoctrineModule',
         'DoctrineORMModule',
         'Infra',
@@ -32,6 +35,13 @@ return array(
         'module_paths' => array(
             './module',
             './vendor',
+<<<<<<< HEAD
+=======
+            './module',
+            './module',
+            './module',
+            './module','./module',
+>>>>>>> c11d551e3e871d26d68e43531bcc177a24487914
         ),
         'config_glob_paths' => array(
             'config/autoload/{,*.}{global,local}.php',
