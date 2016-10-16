@@ -1,13 +1,13 @@
-<<<<<<< HEAD
-Estrutura do projeto baseZro
-=======
-Estrutura do projeto baseZero
->>>>>>> c11d551e3e871d26d68e43531bcc177a24487914
-
-Este projeto tem como objetivo manter uma estrutura Zend Framework 2 básica
-para o desenvolvimento de sistemas.
-
-<<<<<<< HEAD
+O projeto BaseZero tem como base o <a href="https://framework.zend.com">Zend Framework 2</a> um framework 
+       para desenvolvimento de sistemas em PHP, com módulos básicos como:
+    </p>
+       <ul>
+       <li>login e senha</li>
+       <li>Gerenciamento de usuários</li> 
+       <li>Gerenciamento de permissões por módulos</li>
+       </ul>
+       <p>Facilitando assim o desenvolvimento de sistemas em PHP.</p>
+       
 Instalação inicial do módulo:
 
 http://framework.zend.com/manual/current/en/user-guide/skeleton-application.html
