@@ -4,8 +4,6 @@ return array(
         'driver' => 'Pdo',
         'dsn' => 'pgsql:host=localhost;port=5432;dbname=basezero;',
         'adapters' => array(
-            'DB\\Ilist' => array(),
-            'teste' => array(),
         ),
     ),
     'navigation' => array(

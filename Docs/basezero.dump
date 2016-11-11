@@ -1,0 +1,1160 @@
+--
+-- PostgreSQL database dump
+--
+
+SET statement_timeout = 0;
+SET lock_timeout = 0;
+SET client_encoding = 'UTF8';
+SET standard_conforming_strings = on;
+SET check_function_bodies = false;
+SET client_min_messages = warning;
+
+--
+-- Name: plpgsql; Type: EXTENSION; Schema: -; Owner: 
+--
+
+CREATE EXTENSION IF NOT EXISTS plpgsql WITH SCHEMA pg_catalog;
+
+
+--
+-- Name: EXTENSION plpgsql; Type: COMMENT; Schema: -; Owner: 
+--
+
+COMMENT ON EXTENSION plpgsql IS 'PL/pgSQL procedural language';
+
+
+SET search_path = public, pg_catalog;
+
+--
+-- Name: sha1(bytea); Type: FUNCTION; Schema: public; Owner: postgres
+--
+
+CREATE FUNCTION sha1(bytea) RETURNS text
+    LANGUAGE sql IMMUTABLE STRICT
+    AS $_$
+    SELECT encode(digest($1, 'sha1'), 'hex')
+$_$;
+
+
+ALTER FUNCTION public.sha1(bytea) OWNER TO postgres;
+
+SET default_tablespace = '';
+
+SET default_with_oids = false;
+
+--
+-- Name: acao; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE TABLE acao (
+    codigo integer NOT NULL,
+    descricao character varying(100)
+);
+
+
+ALTER TABLE acao OWNER TO postgres;
+
+--
+-- Name: acao_codigo_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE acao_codigo_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE acao_codigo_seq OWNER TO postgres;
+
+--
+-- Name: acao_codigo_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE acao_codigo_seq OWNED BY acao.codigo;
+
+
+--
+-- Name: locale; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE TABLE locale (
+    codigo integer NOT NULL,
+    descricao character varying(100),
+    id character varying(50)
+);
+
+
+ALTER TABLE locale OWNER TO postgres;
+
+--
+-- Name: locale_codigo_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE locale_codigo_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE locale_codigo_seq OWNER TO postgres;
+
+--
+-- Name: locale_codigo_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE locale_codigo_seq OWNED BY locale.codigo;
+
+
+--
+-- Name: modulo; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE TABLE modulo (
+    codigo integer NOT NULL,
+    nome character varying(100),
+    controller character varying(500)
+);
+
+
+ALTER TABLE modulo OWNER TO postgres;
+
+--
+-- Name: modulo_acao; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE TABLE modulo_acao (
+    modulo integer NOT NULL,
+    acao integer NOT NULL
+);
+
+
+ALTER TABLE modulo_acao OWNER TO postgres;
+
+--
+-- Name: modulo_codigo_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE modulo_codigo_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE modulo_codigo_seq OWNER TO postgres;
+
+--
+-- Name: modulo_codigo_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE modulo_codigo_seq OWNED BY modulo.codigo;
+
+
+--
+-- Name: modulo_papel; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE TABLE modulo_papel (
+    modulo integer NOT NULL,
+    papel integer NOT NULL
+);
+
+
+ALTER TABLE modulo_papel OWNER TO postgres;
+
+--
+-- Name: oauth_access_tokens; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE TABLE oauth_access_tokens (
+    access_token character varying(40) NOT NULL,
+    client_id character varying(80) NOT NULL,
+    user_id character varying(255),
+    expires timestamp(0) without time zone NOT NULL,
+    scope character varying(2000)
+);
+
+
+ALTER TABLE oauth_access_tokens OWNER TO postgres;
+
+--
+-- Name: oauth_authorization_codes; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE TABLE oauth_authorization_codes (
+    authorization_code character varying(40) NOT NULL,
+    client_id character varying(80) NOT NULL,
+    user_id character varying(255),
+    redirect_uri character varying(2000),
+    expires timestamp(0) without time zone NOT NULL,
+    scope character varying(2000),
+    id_token character varying(2000)
+);
+
+
+ALTER TABLE oauth_authorization_codes OWNER TO postgres;
+
+--
+-- Name: oauth_clients; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE TABLE oauth_clients (
+    client_id character varying(80) NOT NULL,
+    client_secret character varying(80) NOT NULL,
+    redirect_uri character varying(2000) DEFAULT '/oauth/receivecode'::character varying NOT NULL,
+    grant_types character varying(80),
+    scope character varying(2000),
+    user_id character varying(255),
+    id integer NOT NULL
+);
+
+
+ALTER TABLE oauth_clients OWNER TO postgres;
+
+--
+-- Name: oauth_clients_codigo_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE oauth_clients_codigo_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE oauth_clients_codigo_seq OWNER TO postgres;
+
+--
+-- Name: oauth_clients_codigo_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE oauth_clients_codigo_seq OWNED BY oauth_clients.id;
+
+
+--
+-- Name: oauth_jwt; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE TABLE oauth_jwt (
+    client_id character varying(80) NOT NULL,
+    subject character varying(80),
+    public_key character varying(2000)
+);
+
+
+ALTER TABLE oauth_jwt OWNER TO postgres;
+
+--
+-- Name: oauth_papel; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE TABLE oauth_papel (
+    id integer NOT NULL,
+    papel integer NOT NULL
+);
+
+
+ALTER TABLE oauth_papel OWNER TO postgres;
+
+--
+-- Name: oauth_refresh_tokens; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE TABLE oauth_refresh_tokens (
+    refresh_token character varying(40) NOT NULL,
+    client_id character varying(80) NOT NULL,
+    user_id character varying(255),
+    expires timestamp(0) without time zone NOT NULL,
+    scope character varying(2000)
+);
+
+
+ALTER TABLE oauth_refresh_tokens OWNER TO postgres;
+
+--
+-- Name: oauth_scopes; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE TABLE oauth_scopes (
+    type character varying(255) DEFAULT 'supported'::character varying NOT NULL,
+    scope character varying(2000) NOT NULL,
+    client_id character varying(80) NOT NULL,
+    is_default smallint
+);
+
+
+ALTER TABLE oauth_scopes OWNER TO postgres;
+
+--
+-- Name: oauth_users; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE TABLE oauth_users (
+    username character varying(255) NOT NULL,
+    password character varying(2000),
+    name character varying(255),
+    last_name character varying(255),
+    id integer NOT NULL,
+    empresa integer DEFAULT 1,
+    cep character varying(500),
+    cidade integer DEFAULT 0,
+    locale integer,
+    estado integer
+);
+
+
+ALTER TABLE oauth_users OWNER TO postgres;
+
+--
+-- Name: oauth_users_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE oauth_users_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE oauth_users_id_seq OWNER TO postgres;
+
+--
+-- Name: oauth_users_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE oauth_users_id_seq OWNED BY oauth_users.id;
+
+
+--
+-- Name: papel; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE TABLE papel (
+    codigo integer NOT NULL,
+    descricao character varying(100),
+    publico integer DEFAULT 0
+);
+
+
+ALTER TABLE papel OWNER TO postgres;
+
+--
+-- Name: papel_codigo_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE papel_codigo_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE papel_codigo_seq OWNER TO postgres;
+
+--
+-- Name: papel_codigo_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE papel_codigo_seq OWNED BY papel.codigo;
+
+
+--
+-- Name: usuario; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE TABLE usuario (
+    codigo integer NOT NULL,
+    login character varying(100),
+    senha character varying(500),
+    email character varying(100),
+    locale integer,
+    token text,
+    data date,
+    hora time without time zone
+);
+
+
+ALTER TABLE usuario OWNER TO postgres;
+
+--
+-- Name: usuario_codigo_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE usuario_codigo_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE usuario_codigo_seq OWNER TO postgres;
+
+--
+-- Name: usuario_codigo_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE usuario_codigo_seq OWNED BY usuario.codigo;
+
+
+--
+-- Name: usuario_papel; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE TABLE usuario_papel (
+    usuario integer NOT NULL,
+    papel integer NOT NULL
+);
+
+
+ALTER TABLE usuario_papel OWNER TO postgres;
+
+--
+-- Name: usuario_papel_codigo_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE usuario_papel_codigo_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE usuario_papel_codigo_seq OWNER TO postgres;
+
+--
+-- Name: codigo; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY acao ALTER COLUMN codigo SET DEFAULT nextval('acao_codigo_seq'::regclass);
+
+
+--
+-- Name: codigo; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY locale ALTER COLUMN codigo SET DEFAULT nextval('locale_codigo_seq'::regclass);
+
+
+--
+-- Name: codigo; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY modulo ALTER COLUMN codigo SET DEFAULT nextval('modulo_codigo_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY oauth_clients ALTER COLUMN id SET DEFAULT nextval('oauth_clients_codigo_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY oauth_users ALTER COLUMN id SET DEFAULT nextval('oauth_users_id_seq'::regclass);
+
+
+--
+-- Name: codigo; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY papel ALTER COLUMN codigo SET DEFAULT nextval('papel_codigo_seq'::regclass);
+
+
+--
+-- Name: codigo; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY usuario ALTER COLUMN codigo SET DEFAULT nextval('usuario_codigo_seq'::regclass);
+
+
+--
+-- Data for Name: acao; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY acao (codigo, descricao) FROM stdin;
+1	add
+2	index
+3	edit
+4	delete
+5	password
+\.
+
+
+--
+-- Name: acao_codigo_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('acao_codigo_seq', 17, true);
+
+
+--
+-- Data for Name: locale; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY locale (codigo, descricao, id) FROM stdin;
+2	English	en_US
+3	Portugues	pt_BR
+\.
+
+
+--
+-- Name: locale_codigo_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('locale_codigo_seq', 3, true);
+
+
+--
+-- Data for Name: modulo; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY modulo (codigo, nome, controller) FROM stdin;
+2	Usuario	Infra\\Controller\\Usuario
+19	Importação	Importacao\\Controller\\Importacao
+22	Log de Auditoria	Infra\\Controller\\Log
+25	GerenciamentoContas	Pessoas\\Controller\\GConta
+29	Cadastro Categorias	Categoria\\Controller\\Categoria
+31	Artigo	Artigo\\Controller\\Artigo
+\.
+
+
+--
+-- Data for Name: modulo_acao; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY modulo_acao (modulo, acao) FROM stdin;
+2	3
+2	4
+19	2
+22	2
+2	2
+25	2
+25	3
+29	2
+29	4
+29	3
+31	2
+\.
+
+
+--
+-- Name: modulo_codigo_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('modulo_codigo_seq', 31, true);
+
+
+--
+-- Data for Name: modulo_papel; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY modulo_papel (modulo, papel) FROM stdin;
+2	1
+25	1
+29	21
+31	21
+\.
+
+
+--
+-- Data for Name: oauth_access_tokens; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY oauth_access_tokens (access_token, client_id, user_id, expires, scope) FROM stdin;
+\.
+
+
+--
+-- Data for Name: oauth_authorization_codes; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY oauth_authorization_codes (authorization_code, client_id, user_id, redirect_uri, expires, scope, id_token) FROM stdin;
+\.
+
+
+--
+-- Data for Name: oauth_clients; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY oauth_clients (client_id, client_secret, redirect_uri, grant_types, scope, user_id, id) FROM stdin;
+\.
+
+
+--
+-- Name: oauth_clients_codigo_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('oauth_clients_codigo_seq', 30, true);
+
+
+--
+-- Data for Name: oauth_jwt; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY oauth_jwt (client_id, subject, public_key) FROM stdin;
+\.
+
+
+--
+-- Data for Name: oauth_papel; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY oauth_papel (id, papel) FROM stdin;
+1	1
+\.
+
+
+--
+-- Data for Name: oauth_refresh_tokens; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY oauth_refresh_tokens (refresh_token, client_id, user_id, expires, scope) FROM stdin;
+\.
+
+
+--
+-- Data for Name: oauth_scopes; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY oauth_scopes (type, scope, client_id, is_default) FROM stdin;
+\.
+
+
+--
+-- Data for Name: oauth_users; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY oauth_users (username, password, name, last_name, id, empresa, cep, cidade, locale, estado) FROM stdin;
+admin	$2y$10$jUZ8AsvGq7nR4PoOOXrZTeLMeohZHrA1lNv/OFtnjNe15fgNjBGvi	\N	\N	1	1	\N	0	\N	\N
+\.
+
+
+--
+-- Name: oauth_users_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('oauth_users_id_seq', 77, true);
+
+
+--
+-- Data for Name: papel; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY papel (codigo, descricao, publico) FROM stdin;
+1	admin	0
+12	Anonymous	0
+21	autenticado	\N
+\.
+
+
+--
+-- Name: papel_codigo_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('papel_codigo_seq', 21, true);
+
+
+--
+-- Data for Name: usuario; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY usuario (codigo, login, senha, email, locale, token, data, hora) FROM stdin;
+1	admin	$2y$10$9xNZTSxfTqucxqz.Hj29ZOK5Kjrchb.WyJNfRkTIVZF4wqjNw3unC	admin@checktaskx4.com.br	3	0	2015-06-18	22:41:00
+\.
+
+
+--
+-- Name: usuario_codigo_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('usuario_codigo_seq', 35, true);
+
+
+--
+-- Data for Name: usuario_papel; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY usuario_papel (usuario, papel) FROM stdin;
+1	1
+\.
+
+
+--
+-- Name: usuario_papel_codigo_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('usuario_papel_codigo_seq', 1, false);
+
+
+--
+-- Name: acao_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY acao
+    ADD CONSTRAINT acao_pkey PRIMARY KEY (codigo);
+
+
+--
+-- Name: access_token_pk; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY oauth_access_tokens
+    ADD CONSTRAINT access_token_pk PRIMARY KEY (access_token);
+
+
+--
+-- Name: auth_code_pk; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY oauth_authorization_codes
+    ADD CONSTRAINT auth_code_pk PRIMARY KEY (authorization_code);
+
+
+--
+-- Name: jwt_client_id_pk; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY oauth_jwt
+    ADD CONSTRAINT jwt_client_id_pk PRIMARY KEY (client_id);
+
+
+--
+-- Name: locale_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY locale
+    ADD CONSTRAINT locale_pkey PRIMARY KEY (codigo);
+
+
+--
+-- Name: modulo_acao_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY modulo_acao
+    ADD CONSTRAINT modulo_acao_pkey PRIMARY KEY (modulo, acao);
+
+
+--
+-- Name: modulo_papel_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY modulo_papel
+    ADD CONSTRAINT modulo_papel_pkey PRIMARY KEY (modulo, papel);
+
+
+--
+-- Name: modulo_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY modulo
+    ADD CONSTRAINT modulo_pkey PRIMARY KEY (codigo);
+
+
+--
+-- Name: oauth_clients_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY oauth_clients
+    ADD CONSTRAINT oauth_clients_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: oauth_papel_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY oauth_papel
+    ADD CONSTRAINT oauth_papel_pkey PRIMARY KEY (id, papel);
+
+
+--
+-- Name: oauth_scopes_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY oauth_scopes
+    ADD CONSTRAINT oauth_scopes_pkey PRIMARY KEY (type, scope, client_id);
+
+
+--
+-- Name: oauth_users_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY oauth_users
+    ADD CONSTRAINT oauth_users_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: papel_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY papel
+    ADD CONSTRAINT papel_pkey PRIMARY KEY (codigo);
+
+
+--
+-- Name: refresh_token_pk; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY oauth_refresh_tokens
+    ADD CONSTRAINT refresh_token_pk PRIMARY KEY (refresh_token);
+
+
+--
+-- Name: usuario_papel_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY usuario_papel
+    ADD CONSTRAINT usuario_papel_pkey PRIMARY KEY (usuario, papel);
+
+
+--
+-- Name: usuario_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY usuario
+    ADD CONSTRAINT usuario_pkey PRIMARY KEY (codigo);
+
+
+--
+-- Name: oauth_users_username_pk; Type: INDEX; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE UNIQUE INDEX oauth_users_username_pk ON oauth_users USING btree (username);
+
+
+--
+-- Name: modulo_acao_acao_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY modulo_acao
+    ADD CONSTRAINT modulo_acao_acao_fkey FOREIGN KEY (acao) REFERENCES acao(codigo);
+
+
+--
+-- Name: modulo_acao_modulo_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY modulo_acao
+    ADD CONSTRAINT modulo_acao_modulo_fkey FOREIGN KEY (modulo) REFERENCES modulo(codigo);
+
+
+--
+-- Name: modulo_papel_modulo_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY modulo_papel
+    ADD CONSTRAINT modulo_papel_modulo_fkey FOREIGN KEY (modulo) REFERENCES modulo(codigo);
+
+
+--
+-- Name: modulo_papel_papel_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY modulo_papel
+    ADD CONSTRAINT modulo_papel_papel_fkey FOREIGN KEY (papel) REFERENCES papel(codigo);
+
+
+--
+-- Name: oauth_papel_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY oauth_papel
+    ADD CONSTRAINT oauth_papel_id_fkey FOREIGN KEY (id) REFERENCES oauth_users(id);
+
+
+--
+-- Name: oauth_papel_papel_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY oauth_papel
+    ADD CONSTRAINT oauth_papel_papel_fkey FOREIGN KEY (papel) REFERENCES papel(codigo);
+
+
+--
+-- Name: oauth_users_locale_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY oauth_users
+    ADD CONSTRAINT oauth_users_locale_fkey FOREIGN KEY (locale) REFERENCES locale(codigo);
+
+
+--
+-- Name: usuario_locale_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY usuario
+    ADD CONSTRAINT usuario_locale_fkey FOREIGN KEY (locale) REFERENCES locale(codigo);
+
+
+--
+-- Name: usuario_papel_papel_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY usuario_papel
+    ADD CONSTRAINT usuario_papel_papel_fkey FOREIGN KEY (papel) REFERENCES papel(codigo);
+
+
+--
+-- Name: usuario_papel_usuario_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY usuario_papel
+    ADD CONSTRAINT usuario_papel_usuario_fkey FOREIGN KEY (usuario) REFERENCES usuario(codigo);
+
+
+--
+-- Name: public; Type: ACL; Schema: -; Owner: postgres
+--
+
+REVOKE ALL ON SCHEMA public FROM PUBLIC;
+REVOKE ALL ON SCHEMA public FROM postgres;
+GRANT ALL ON SCHEMA public TO postgres;
+GRANT ALL ON SCHEMA public TO PUBLIC;
+
+
+--
+-- Name: acao; Type: ACL; Schema: public; Owner: postgres
+--
+
+REVOKE ALL ON TABLE acao FROM PUBLIC;
+REVOKE ALL ON TABLE acao FROM postgres;
+GRANT ALL ON TABLE acao TO postgres;
+GRANT SELECT,INSERT,DELETE,UPDATE ON TABLE acao TO basezero;
+
+
+--
+-- Name: acao_codigo_seq; Type: ACL; Schema: public; Owner: postgres
+--
+
+REVOKE ALL ON SEQUENCE acao_codigo_seq FROM PUBLIC;
+REVOKE ALL ON SEQUENCE acao_codigo_seq FROM postgres;
+GRANT ALL ON SEQUENCE acao_codigo_seq TO postgres;
+GRANT ALL ON SEQUENCE acao_codigo_seq TO basezero;
+
+
+--
+-- Name: locale; Type: ACL; Schema: public; Owner: postgres
+--
+
+REVOKE ALL ON TABLE locale FROM PUBLIC;
+REVOKE ALL ON TABLE locale FROM postgres;
+GRANT ALL ON TABLE locale TO postgres;
+GRANT SELECT,INSERT,DELETE,UPDATE ON TABLE locale TO basezero;
+
+
+--
+-- Name: locale_codigo_seq; Type: ACL; Schema: public; Owner: postgres
+--
+
+REVOKE ALL ON SEQUENCE locale_codigo_seq FROM PUBLIC;
+REVOKE ALL ON SEQUENCE locale_codigo_seq FROM postgres;
+GRANT ALL ON SEQUENCE locale_codigo_seq TO postgres;
+GRANT ALL ON SEQUENCE locale_codigo_seq TO basezero;
+
+
+--
+-- Name: modulo; Type: ACL; Schema: public; Owner: postgres
+--
+
+REVOKE ALL ON TABLE modulo FROM PUBLIC;
+REVOKE ALL ON TABLE modulo FROM postgres;
+GRANT ALL ON TABLE modulo TO postgres;
+GRANT SELECT,INSERT,DELETE,UPDATE ON TABLE modulo TO basezero;
+
+
+--
+-- Name: modulo_acao; Type: ACL; Schema: public; Owner: postgres
+--
+
+REVOKE ALL ON TABLE modulo_acao FROM PUBLIC;
+REVOKE ALL ON TABLE modulo_acao FROM postgres;
+GRANT ALL ON TABLE modulo_acao TO postgres;
+GRANT SELECT,INSERT,DELETE,UPDATE ON TABLE modulo_acao TO basezero;
+
+
+--
+-- Name: modulo_codigo_seq; Type: ACL; Schema: public; Owner: postgres
+--
+
+REVOKE ALL ON SEQUENCE modulo_codigo_seq FROM PUBLIC;
+REVOKE ALL ON SEQUENCE modulo_codigo_seq FROM postgres;
+GRANT ALL ON SEQUENCE modulo_codigo_seq TO postgres;
+GRANT ALL ON SEQUENCE modulo_codigo_seq TO basezero;
+
+
+--
+-- Name: modulo_papel; Type: ACL; Schema: public; Owner: postgres
+--
+
+REVOKE ALL ON TABLE modulo_papel FROM PUBLIC;
+REVOKE ALL ON TABLE modulo_papel FROM postgres;
+GRANT ALL ON TABLE modulo_papel TO postgres;
+GRANT SELECT,INSERT,DELETE,UPDATE ON TABLE modulo_papel TO basezero;
+
+
+--
+-- Name: oauth_access_tokens; Type: ACL; Schema: public; Owner: postgres
+--
+
+REVOKE ALL ON TABLE oauth_access_tokens FROM PUBLIC;
+REVOKE ALL ON TABLE oauth_access_tokens FROM postgres;
+GRANT ALL ON TABLE oauth_access_tokens TO postgres;
+GRANT SELECT,INSERT,DELETE,UPDATE ON TABLE oauth_access_tokens TO basezero;
+
+
+--
+-- Name: oauth_authorization_codes; Type: ACL; Schema: public; Owner: postgres
+--
+
+REVOKE ALL ON TABLE oauth_authorization_codes FROM PUBLIC;
+REVOKE ALL ON TABLE oauth_authorization_codes FROM postgres;
+GRANT ALL ON TABLE oauth_authorization_codes TO postgres;
+GRANT SELECT,INSERT,DELETE,UPDATE ON TABLE oauth_authorization_codes TO basezero;
+
+
+--
+-- Name: oauth_clients; Type: ACL; Schema: public; Owner: postgres
+--
+
+REVOKE ALL ON TABLE oauth_clients FROM PUBLIC;
+REVOKE ALL ON TABLE oauth_clients FROM postgres;
+GRANT ALL ON TABLE oauth_clients TO postgres;
+GRANT SELECT,INSERT,DELETE,UPDATE ON TABLE oauth_clients TO basezero;
+
+
+--
+-- Name: oauth_clients_codigo_seq; Type: ACL; Schema: public; Owner: postgres
+--
+
+REVOKE ALL ON SEQUENCE oauth_clients_codigo_seq FROM PUBLIC;
+REVOKE ALL ON SEQUENCE oauth_clients_codigo_seq FROM postgres;
+GRANT ALL ON SEQUENCE oauth_clients_codigo_seq TO postgres;
+GRANT ALL ON SEQUENCE oauth_clients_codigo_seq TO basezero;
+
+
+--
+-- Name: oauth_jwt; Type: ACL; Schema: public; Owner: postgres
+--
+
+REVOKE ALL ON TABLE oauth_jwt FROM PUBLIC;
+REVOKE ALL ON TABLE oauth_jwt FROM postgres;
+GRANT ALL ON TABLE oauth_jwt TO postgres;
+GRANT SELECT,INSERT,DELETE,UPDATE ON TABLE oauth_jwt TO basezero;
+
+
+--
+-- Name: oauth_papel; Type: ACL; Schema: public; Owner: postgres
+--
+
+REVOKE ALL ON TABLE oauth_papel FROM PUBLIC;
+REVOKE ALL ON TABLE oauth_papel FROM postgres;
+GRANT ALL ON TABLE oauth_papel TO postgres;
+GRANT SELECT,INSERT,DELETE,UPDATE ON TABLE oauth_papel TO basezero;
+
+
+--
+-- Name: oauth_refresh_tokens; Type: ACL; Schema: public; Owner: postgres
+--
+
+REVOKE ALL ON TABLE oauth_refresh_tokens FROM PUBLIC;
+REVOKE ALL ON TABLE oauth_refresh_tokens FROM postgres;
+GRANT ALL ON TABLE oauth_refresh_tokens TO postgres;
+GRANT SELECT,INSERT,DELETE,UPDATE ON TABLE oauth_refresh_tokens TO basezero;
+
+
+--
+-- Name: oauth_scopes; Type: ACL; Schema: public; Owner: postgres
+--
+
+REVOKE ALL ON TABLE oauth_scopes FROM PUBLIC;
+REVOKE ALL ON TABLE oauth_scopes FROM postgres;
+GRANT ALL ON TABLE oauth_scopes TO postgres;
+GRANT SELECT,INSERT,DELETE,UPDATE ON TABLE oauth_scopes TO basezero;
+
+
+--
+-- Name: oauth_users; Type: ACL; Schema: public; Owner: postgres
+--
+
+REVOKE ALL ON TABLE oauth_users FROM PUBLIC;
+REVOKE ALL ON TABLE oauth_users FROM postgres;
+GRANT ALL ON TABLE oauth_users TO postgres;
+GRANT SELECT,INSERT,DELETE,UPDATE ON TABLE oauth_users TO basezero;
+
+
+--
+-- Name: oauth_users_id_seq; Type: ACL; Schema: public; Owner: postgres
+--
+
+REVOKE ALL ON SEQUENCE oauth_users_id_seq FROM PUBLIC;
+REVOKE ALL ON SEQUENCE oauth_users_id_seq FROM postgres;
+GRANT ALL ON SEQUENCE oauth_users_id_seq TO postgres;
+GRANT ALL ON SEQUENCE oauth_users_id_seq TO basezero;
+
+
+--
+-- Name: papel; Type: ACL; Schema: public; Owner: postgres
+--
+
+REVOKE ALL ON TABLE papel FROM PUBLIC;
+REVOKE ALL ON TABLE papel FROM postgres;
+GRANT ALL ON TABLE papel TO postgres;
+GRANT SELECT,INSERT,DELETE,UPDATE ON TABLE papel TO basezero;
+
+
+--
+-- Name: papel_codigo_seq; Type: ACL; Schema: public; Owner: postgres
+--
+
+REVOKE ALL ON SEQUENCE papel_codigo_seq FROM PUBLIC;
+REVOKE ALL ON SEQUENCE papel_codigo_seq FROM postgres;
+GRANT ALL ON SEQUENCE papel_codigo_seq TO postgres;
+GRANT ALL ON SEQUENCE papel_codigo_seq TO basezero;
+
+
+--
+-- Name: usuario; Type: ACL; Schema: public; Owner: postgres
+--
+
+REVOKE ALL ON TABLE usuario FROM PUBLIC;
+REVOKE ALL ON TABLE usuario FROM postgres;
+GRANT ALL ON TABLE usuario TO postgres;
+GRANT SELECT,INSERT,DELETE,UPDATE ON TABLE usuario TO basezero;
+
+
+--
+-- Name: usuario_codigo_seq; Type: ACL; Schema: public; Owner: postgres
+--
+
+REVOKE ALL ON SEQUENCE usuario_codigo_seq FROM PUBLIC;
+REVOKE ALL ON SEQUENCE usuario_codigo_seq FROM postgres;
+GRANT ALL ON SEQUENCE usuario_codigo_seq TO postgres;
+GRANT ALL ON SEQUENCE usuario_codigo_seq TO basezero;
+
+
+--
+-- Name: usuario_papel_codigo_seq; Type: ACL; Schema: public; Owner: postgres
+--
+
+REVOKE ALL ON SEQUENCE usuario_papel_codigo_seq FROM PUBLIC;
+REVOKE ALL ON SEQUENCE usuario_papel_codigo_seq FROM postgres;
+GRANT ALL ON SEQUENCE usuario_papel_codigo_seq TO postgres;
+GRANT ALL ON SEQUENCE usuario_papel_codigo_seq TO basezero;
+
+
+--
+-- PostgreSQL database dump complete
+--
+

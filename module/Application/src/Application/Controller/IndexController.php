@@ -21,7 +21,6 @@ class IndexController extends AbstractActionController
     
     public function sobreAction()
     {
-        echo 'teste';
        // return new ViewModel();
     }
 }

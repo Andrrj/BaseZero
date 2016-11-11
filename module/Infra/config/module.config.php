@@ -17,58 +17,7 @@ return array(
     ),
      'router' => array(
         'routes' => array(
-            'sobre' => array(
-            		'type'    => 'segment',
-            		'options' => array(
-            				// Basta alterar a rota para este modelo!!!
-            				'route'    => '#sobre',
-            				'defaults' => array(
-//             						'controller' => 'Infra\Controller\Infra',
-//             						'action'     => 'index',
-            						'publico' => true,
-            				),
-            		),
             
-            ),
-            'como' => array(
-            		'type'    => 'segment',
-            		'options' => array(
-            				// Basta alterar a rota para este modelo!!!
-            				'route'    => '#como',
-            				'defaults' => array(
-            						//'controller' => 'Infra\Controller\Infra',
-            						//'action'     => 'index',
-            						'publico' => true,
-            				),
-            		),
-            
-            ),
-            'clientes' => array(
-            		'type'    => 'segment',
-            		'options' => array(
-            				// Basta alterar a rota para este modelo!!!
-            				'route'    => '#clientes',
-            				'defaults' => array(
-            						//'controller' => 'Infra\Controller\Infra',
-            						//'action'     => 'index',
-            						'publico' => true,
-            				),
-            		),
-            
-            ),
-            'contato' => array(
-            		'type'    => 'segment',
-            		'options' => array(
-            				// Basta alterar a rota para este modelo!!!
-            				'route'    => '#contato',
-            				'defaults' => array(
-            						//'controller' => 'Infra\Controller\Infra',
-            						//'action'     => 'index',
-            						'publico' => true,
-            				),
-            		),
-            
-            ),
             'infra' => array(
             		'type'    => 'segment',
             		'options' => array(
@@ -189,6 +138,12 @@ return array(
 
 		    	return new Infra\Form\SwitchLanguage($sm->get('languages'));
 		    	},
+	    	'Logger' => function($sm){ //servico de logs de erros
+	    	  $logger = new \Zend\Log\Logger;
+	    	  $writer = new \Zend\Log\Writer\Stream('./data/logs/'.date('Y-m-d').'-error.log');
+	    	  $logger->addWriter($writer);
+	    	  return $logger;
+	    	},
             'translator' => 'Zend\I18n\Translator\TranslatorServiceFactory',
             'fpdf'   => 'Infra\Model\fpdf17\fpdf',
 		),

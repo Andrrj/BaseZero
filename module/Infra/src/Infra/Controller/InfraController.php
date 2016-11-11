@@ -82,7 +82,8 @@ class InfraController extends AbstractActionController
     {
         $translator = $this->getServiceLocator()->get('translator');
         $form = $this->getServiceLocator()->get('telaLogin');
-                 
+            
+        $form->get('submit')->setAttribute('value', $translator->translate('Entrar'));
          $request = $this->getRequest();
          
          if ($this->request->isPost()) {

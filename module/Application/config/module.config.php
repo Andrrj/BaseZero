@@ -52,7 +52,20 @@ return array(
                     ),
                 ),
             ),
+            'sobre' => array(
+                'type'    => 'Segment',
+                'options' => array(
+                    'route'    => '/sobre[/:id]',
+                    'defaults' => array(
+                        '__NAMESPACE__' => 'Application\Controller',
+                        'controller'    => 'Index',
+                        'action'        => 'sobre',
+                        'publico'=>true,
+                    ),
+                ),
+            ),
         ),
+
     ),
     'service_manager' => array(
         'abstract_factories' => array(
@@ -122,6 +135,21 @@ return array(
     						)
     				)
     		)
+    ),
+    
+    'navigation' => array(
+        'default' => array(
+            array(
+                'label' => 'Sobre',
+                'route' => 'sobre',
+                'action' => 'sobre',
+                'id'=>'login',
+                'order'=> 900,
+                'class'=>'dropdown-toggle',
+                'resource'   => 'publico',
+            ),
+                       	
+        ),
     ),
     
     

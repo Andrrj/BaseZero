@@ -60,6 +60,19 @@ class Module implements AutoloaderProviderInterface
         $eventManager->attach(MvcEvent::EVENT_DISPATCH, array($this,'checkRights'), -101);
         $eventManager->attach(MvcEvent::EVENT_RENDER, array($this, 'onRender'));
       
+        /**
+         * Log any Uncaught Errors
+         */
+        $sharedManager = $e->getApplication()->getEventManager()->getSharedManager();
+        $sm = $e->getApplication()->getServiceManager();
+        $sharedManager->attach('Zend\Mvc\Application', 'dispatch.error',
+            function($e) use ($sm) {
+                if ($e->getParam('exception')){
+                    $sm->get('Logger')->crit($e->getParam('exception'));
+                }
+            }
+            );
+        
         
     }
     
