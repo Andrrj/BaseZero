@@ -1,4 +1,6 @@
 <?php
+use Zend\Log\Writer\Stream;
+
 return array(
     'db' => array(
         'driver' => 'Pdo',
@@ -12,14 +14,28 @@ return array(
                 'label' => 'Início',
                 'route' => 'home',
                 'order' => 100,
-                'resource' => 'publico',
+                'publico' => true,
+            ),
+            1 => array(
+                'label' => 'Cursos',
+                'route' => 'ofertacursos',
+                'order' => 200,
+                'publico' => true,
             ),
         ),
+            
     ),
     'service_manager' => array(
         'factories' => array(
             'navigation' => 'Zend\\Navigation\\Service\\DefaultNavigationFactory',
             'Zend\\Db\\Adapter\\Adapter' => 'Zend\\Db\\Adapter\\AdapterServiceFactory',
+            'Log' => function ($sm) {
+                    $log = new Zend\Log\Logger();
+                    $writer = new Stream('data/logs/logfile.log');
+                    $log->addWriter($writer);
+            
+                 return $log;
+            }
         ),
     ),
     'router' => array(
@@ -36,8 +52,6 @@ return array(
     'zf-mvc-auth' => array(
         'authentication' => array(
             'map' => array(
-                'User\\V1' => 'oauth2',
-                'IListApp\\V1' => 'oauth2',
             ),
         ),
     ),

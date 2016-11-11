@@ -11,7 +11,7 @@ return array(
           * Set the list of allowed origins domain with protocol.
           */
          // 'allowed_origins' => array('http://example.com'),
-         'allowed_origins' => array('*', 'file://', 'http://localhost:8084/mercado'),
+         'allowed_origins' => array('*', 'file://', 'http://localhost:8088', 'http://www.ambiente-virtual.net'),
 
          /**
           * Set the list of HTTP verbs.
