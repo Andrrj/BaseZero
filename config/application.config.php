@@ -7,6 +7,7 @@
 return array(
     'modules' => array(
         'Application',
+        'ZF\\Configuration',
         'ZF\\DevelopmentMode',
         'ZF\\Apigility',
         'ZF\\Apigility\\Provider',
@@ -31,10 +32,6 @@ return array(
         'module_paths' => array(
             './module',
             './vendor',
-            './module',
-            './module',
-            './module',
-            './module','./module',
         ),
         'config_glob_paths' => array(
             'config/autoload/{,*.}{global,local}.php',
